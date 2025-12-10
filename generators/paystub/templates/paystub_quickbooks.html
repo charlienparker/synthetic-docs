@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>QuickBooks Payroll Stub</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 10px;
+            margin: 0;
+            padding: 15px;
+            background-color: white;
+            color: #000;
+        }
+        .stub-wrapper {
+            border: 1px solid #ccc;
+            max-width: 750px;
+            background-color: white;
+        }
+        .header {
+            background: linear-gradient(135deg, {{ primary_color }}, {{ accent_color }});
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .qb-logo {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .header-info {
+            text-align: right;
+        }
+        .company-section {
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+            background-color: #f9f9f9;
+        }
+        .company-name {
+            font-size: 14px;
+            font-weight: bold;
+            color: #0077be;
+            margin-bottom: 5px;
+        }
+        .pay-info-bar {
+            background-color: #e6f2ff;
+            padding: 10px 15px;
+            border-left: 4px solid #0077be;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .content-area {
+            padding: 0 15px 15px 15px;
+        }
+        .employee-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #fafafa;
+            border-radius: 5px;
+        }
+        .info-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .info-label {
+            font-size: 8px;
+            color: #666;
+            text-transform: uppercase;
+            margin-bottom: 2px;
+        }
+        .info-value {
+            font-weight: bold;
+            font-size: 10px;
+        }
+        .payroll-data {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .data-section {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .section-title {
+            background-color: #0077be;
+            color: white;
+            padding: 8px 12px;
+            font-weight: bold;
+            border-radius: 5px 5px 0 0;
+            font-size: 9px;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 9px;
+        }
+        .data-table th {
+            background-color: #f0f8ff;
+            padding: 6px 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            font-size: 8px;
+            color: #333;
+        }
+        .data-table td {
+            padding: 5px 8px;
+            border-bottom: 1px solid #eee;
+        }
+        .data-table tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+        .data-table tr:hover {
+            background-color: #e6f2ff;
+        }
+        .amount-cell {
+            text-align: right;
+            font-family: 'Courier New', monospace;
+        }
+        .total-row {
+            background-color: #e6f2ff !important;
+            font-weight: bold;
+            border-top: 2px solid #0077be;
+        }
+        .summary-section {
+            background: linear-gradient(135deg, #28a745, #20632c);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        .net-pay-label {
+            font-size: 11px;
+            margin-bottom: 5px;
+        }
+        .net-pay-amount {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .ytd-summary {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .ytd-box {
+            text-align: center;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            background-color: #f8f9fa;
+        }
+        .ytd-label {
+            font-size: 8px;
+            color: #666;
+            text-transform: uppercase;
+        }
+        .ytd-value {
+            font-size: 11px;
+            font-weight: bold;
+            color: #0077be;
+        }
+        .footer {
+            border-top: 1px solid #ddd;
+            padding: 10px 15px;
+            background-color: #f9f9f9;
+            font-size: 8px;
+            color: #666;
+            text-align: center;
+        }
+        .qb-branding {
+            margin-top: 5px;
+            color: #0077be;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="stub-wrapper">
+        <div class="header">
+            <div class="qb-logo">QuickBooks Payroll</div>
+            <div class="header-info">
+                <div>Pay Statement</div>
+                <div>Check #{{ check_number }}</div>
+            </div>
+        </div>
+
+        <div class="company-section">
+            <div class="company-name">{{ company_name }}</div>
+            <div>{{ company_address|safe }}</div>
+        </div>
+
+        <div class="pay-info-bar">
+            <div><strong>Pay Period:</strong> {{ pay_period_start }} - {{ pay_period_end }}</div>
+            <div><strong>Pay Date:</strong> {{ pay_date }}</div>
+            <div><strong>Pay Frequency:</strong> {{ pay_frequency }}</div>
+        </div>
+
+        <div class="content-area">
+            <div class="employee-info">
+                <div class="info-group">
+                    <div class="info-label">Employee Name</div>
+                    <div class="info-value">{{ employee_name }}</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Employee ID</div>
+                    <div class="info-value">{{ employee_id }}</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Department</div>
+                    <div class="info-value">Operations</div>
+                </div>
+            </div>
+
+            <div class="payroll-data">
+                <div class="data-section">
+                    <div class="section-title">EARNINGS & HOURS</div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Rate</th>
+                                <th>Hours</th>
+                                <th>Current</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Regular Pay</td>
+                                <td class="amount-cell">${{ hourly_rate }}</td>
+                                <td class="amount-cell">{{ regular_hours }}</td>
+                                <td class="amount-cell">${{ regular_pay }}</td>
+                            </tr>
+                            {% if overtime_hours != "0.0" %}
+                            <tr>
+                                <td>Overtime Pay</td>
+                                <td class="amount-cell">${{ overtime_rate }}</td>
+                                <td class="amount-cell">{{ overtime_hours }}</td>
+                                <td class="amount-cell">${{ overtime_pay }}</td>
+                            </tr>
+                            {% endif %}
+                            <tr class="total-row">
+                                <td colspan="3"><strong>Total Earnings</strong></td>
+                                <td class="amount-cell"><strong>${{ gross_pay }}</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="data-section">
+                    <div class="section-title">TAXES & DEDUCTIONS</div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th>Current</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Federal Income Tax</td>
+                                <td class="amount-cell">${{ federal_tax }}</td>
+                            </tr>
+                            <tr>
+                                <td>State Income Tax</td>
+                                <td class="amount-cell">${{ state_tax }}</td>
+                            </tr>
+                            <tr>
+                                <td>Social Security Tax</td>
+                                <td class="amount-cell">${{ social_security }}</td>
+                            </tr>
+                            <tr>
+                                <td>Medicare Tax</td>
+                                <td class="amount-cell">${{ medicare }}</td>
+                            </tr>
+                            {% if health_insurance %}
+                            <tr>
+                                <td>Health Insurance</td>
+                                <td class="amount-cell">${{ health_insurance }}</td>
+                            </tr>
+                            {% endif %}
+                            {% if retirement %}
+                            <tr>
+                                <td>401(k) Deduction</td>
+                                <td class="amount-cell">${{ retirement }}</td>
+                            </tr>
+                            {% endif %}
+                            <tr class="total-row">
+                                <td><strong>Total Deductions</strong></td>
+                                <td class="amount-cell"><strong>${{ total_deductions }}</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="summary-section">
+                <div class="net-pay-label">Net Pay</div>
+                <div class="net-pay-amount">${{ net_pay }}</div>
+            </div>
+
+            <div class="ytd-summary">
+                <div class="ytd-box">
+                    <div class="ytd-label">YTD Gross</div>
+                    <div class="ytd-value">${{ ytd_gross }}</div>
+                </div>
+                <div class="ytd-box">
+                    <div class="ytd-label">YTD Fed Tax</div>
+                    <div class="ytd-value">${{ ytd_federal_tax }}</div>
+                </div>
+                <div class="ytd-box">
+                    <div class="ytd-label">YTD Net Pay</div>
+                    <div class="ytd-value">${{ ytd_net }}</div>
+                </div>
+                <div class="ytd-box">
+                    <div class="ytd-label">YTD Deductions</div>
+                    <div class="ytd-value">${{ (total_deductions|float * 26)|round(2) }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div>This is your official pay statement. Please retain for your records.</div>
+            <div>For questions about your pay, contact your HR department.</div>
+            <div class="qb-branding">Powered by QuickBooks Payroll</div>
+        </div>
+    </div>
+</body>
+</html>

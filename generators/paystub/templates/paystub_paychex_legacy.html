@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Paychex Legacy Paystub</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            font-size: 9px;
+            margin: 0;
+            padding: 20px;
+            background-color: #fafafa;
+            color: #000;
+            line-height: 1.2;
+        }
+        .paystub-container {
+            background-color: white;
+            border: 2px solid #000;
+            padding: 15px;
+            max-width: 700px;
+        }
+        .header-section {
+            text-align: center;
+            border-bottom: 2px solid #000;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+        .paychex-logo {
+            font-size: 18px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+        .company-header {
+            font-size: 12px;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+        .info-block {
+            border: 1px solid #000;
+            padding: 8px;
+        }
+        .info-title {
+            font-weight: bold;
+            text-decoration: underline;
+            margin-bottom: 5px;
+        }
+        .pay-period-box {
+            text-align: center;
+            border: 2px solid #000;
+            padding: 8px;
+            margin-bottom: 15px;
+            background-color: #f0f0f0;
+        }
+        .earnings-section {
+            margin-bottom: 15px;
+        }
+        .section-header {
+            background-color: #000;
+            color: white;
+            padding: 5px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+        }
+        .data-table td {
+            border: 1px solid #000;
+            padding: 3px 5px;
+            text-align: right;
+        }
+        .data-table td:first-child {
+            text-align: left;
+            font-weight: bold;
+        }
+        .data-table .total-row {
+            background-color: #e0e0e0;
+            font-weight: bold;
+        }
+        .three-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .net-pay-box {
+            text-align: center;
+            border: 3px double #000;
+            padding: 10px;
+            background-color: #e6f3ff;
+            margin: 15px 0;
+        }
+        .net-pay-amount {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .stub-footer {
+            border-top: 2px solid #000;
+            padding-top: 10px;
+            margin-top: 15px;
+            text-align: center;
+            font-size: 7px;
+        }
+        .memo-section {
+            border: 1px solid #000;
+            padding: 5px;
+            margin-bottom: 10px;
+            min-height: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="paystub-container">
+        <div class="header-section">
+            <div class="paychex-logo">PAYCHEX</div>
+            <div class="company-header">{{ company_name }}</div>
+            <div>{{ company_address|safe }}</div>
+        </div>
+
+        <div class="pay-period-box">
+            <strong>PAY PERIOD: {{ pay_period_start }} through {{ pay_period_end }}</strong><br>
+            <strong>PAY DATE: {{ pay_date }}</strong> | <strong>CHECK NUMBER: {{ check_number }}</strong>
+        </div>
+
+        <div class="info-grid">
+            <div class="info-block">
+                <div class="info-title">EMPLOYEE INFORMATION</div>
+                <div>NAME: {{ employee_name }}</div>
+                <div>ID: {{ employee_id }}</div>
+                <div>DEPT: GENERAL</div>
+                <div>STATUS: ACTIVE</div>
+            </div>
+            <div class="info-block">
+                <div class="info-title">PAY INFORMATION</div>
+                <div>FREQUENCY: {{ pay_frequency|upper }}</div>
+                <div>METHOD: DIRECT DEPOSIT</div>
+                <div>TAX STATUS: SINGLE</div>
+                <div>EXEMPT: NO</div>
+            </div>
+        </div>
+
+        <div class="three-column">
+            <div>
+                <div class="section-header">EARNINGS</div>
+                <table class="data-table">
+                    <tr>
+                        <td>DESCRIPTION</td>
+                        <td>HOURS</td>
+                        <td>RATE</td>
+                        <td>CURRENT</td>
+                    </tr>
+                    <tr>
+                        <td>REGULAR</td>
+                        <td>{{ regular_hours }}</td>
+                        <td>{{ hourly_rate }}</td>
+                        <td>{{ regular_pay }}</td>
+                    </tr>
+                    {% if overtime_hours != "0.0" %}
+                    <tr>
+                        <td>OVERTIME</td>
+                        <td>{{ overtime_hours }}</td>
+                        <td>{{ overtime_rate }}</td>
+                        <td>{{ overtime_pay }}</td>
+                    </tr>
+                    {% endif %}
+                    <tr class="total-row">
+                        <td colspan="3">TOTAL GROSS</td>
+                        <td>{{ gross_pay }}</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div>
+                <div class="section-header">DEDUCTIONS</div>
+                <table class="data-table">
+                    <tr>
+                        <td>DESCRIPTION</td>
+                        <td>CURRENT</td>
+                    </tr>
+                    <tr>
+                        <td>FED TAX</td>
+                        <td>{{ federal_tax }}</td>
+                    </tr>
+                    <tr>
+                        <td>STATE TAX</td>
+                        <td>{{ state_tax }}</td>
+                    </tr>
+                    <tr>
+                        <td>SOC SEC</td>
+                        <td>{{ social_security }}</td>
+                    </tr>
+                    <tr>
+                        <td>MEDICARE</td>
+                        <td>{{ medicare }}</td>
+                    </tr>
+                    {% if health_insurance %}
+                    <tr>
+                        <td>HEALTH INS</td>
+                        <td>{{ health_insurance }}</td>
+                    </tr>
+                    {% endif %}
+                    {% if retirement %}
+                    <tr>
+                        <td>401K</td>
+                        <td>{{ retirement }}</td>
+                    </tr>
+                    {% endif %}
+                    <tr class="total-row">
+                        <td>TOTAL DED</td>
+                        <td>{{ total_deductions }}</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div>
+                <div class="section-header">YTD TOTALS</div>
+                <table class="data-table">
+                    <tr>
+                        <td>DESCRIPTION</td>
+                        <td>YTD</td>
+                    </tr>
+                    <tr>
+                        <td>GROSS PAY</td>
+                        <td>{{ ytd_gross }}</td>
+                    </tr>
+                    <tr>
+                        <td>FED TAX</td>
+                        <td>{{ ytd_federal_tax }}</td>
+                    </tr>
+                    <tr>
+                        <td>SOC SEC</td>
+                        <td>{{ (social_security|float * 26)|round(2) }}</td>
+                    </tr>
+                    <tr>
+                        <td>MEDICARE</td>
+                        <td>{{ (medicare|float * 26)|round(2) }}</td>
+                    </tr>
+                    <tr>
+                        <td>NET PAY</td>
+                        <td>{{ ytd_net }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="net-pay-box">
+            <div>NET PAY</div>
+            <div class="net-pay-amount">${{ net_pay }}</div>
+        </div>
+
+        <div class="memo-section">
+            <strong>MEMO:</strong> DIRECT DEPOSIT TO ACCOUNT ENDING IN 1234
+        </div>
+
+        <div class="stub-footer">
+            <div>*** CONFIDENTIAL PAYROLL INFORMATION ***</div>
+            <div>RETAIN THIS STATEMENT FOR YOUR RECORDS</div>
+            <div>PAYCHEX, INC. - ROCHESTER, NY 14625</div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Small Business Basic Paystub</title>
+    <style>
+        body {
+            font-family: Times, serif;
+            font-size: 10px;
+            margin: 0;
+            padding: 20px;
+            background-color: white;
+            color: #000;
+            line-height: 1.3;
+        }
+        .paystub-container {
+            max-width: 600px;
+            border: 2px solid #000;
+            padding: 20px;
+            background-color: white;
+        }
+        .header {
+            text-align: center;
+            border-bottom: 1px solid #000;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        .company-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+        .company-address {
+            font-size: 11px;
+            margin-bottom: 10px;
+        }
+        .paystub-title {
+            font-size: 14px;
+            font-weight: bold;
+            text-decoration: underline;
+            margin-top: 10px;
+        }
+        .employee-pay-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            border: 1px solid #000;
+            padding: 10px;
+        }
+        .employee-details, .pay-details {
+            flex: 1;
+        }
+        .pay-details {
+            text-align: right;
+        }
+        .section-divider {
+            border-top: 1px solid #000;
+            margin: 15px 0;
+            padding-top: 10px;
+        }
+        .earnings-deductions {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+        .earnings-column, .deductions-column {
+            flex: 1;
+        }
+        .column-header {
+            font-weight: bold;
+            text-align: center;
+            border-bottom: 1px solid #000;
+            padding: 5px;
+            margin-bottom: 10px;
+            background-color: #f0f0f0;
+        }
+        .line-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            padding: 2px 0;
+        }
+        .line-item.dotted {
+            border-bottom: 1px dotted #666;
+        }
+        .total-line {
+            border-top: 1px solid #000;
+            border-bottom: 2px solid #000;
+            font-weight: bold;
+            margin-top: 10px;
+            padding-top: 5px;
+        }
+        .net-pay-section {
+            text-align: center;
+            border: 2px solid #000;
+            padding: 15px;
+            margin: 20px 0;
+            background-color: #f8f8f8;
+        }
+        .net-pay-label {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .net-pay-amount {
+            font-size: 20px;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+        .ytd-section {
+            border-top: 1px solid #000;
+            padding-top: 15px;
+            margin-top: 20px;
+        }
+        .ytd-title {
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px;
+            text-decoration: underline;
+        }
+        .ytd-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .signature-section {
+            margin-top: 30px;
+            border-top: 1px solid #000;
+            padding-top: 15px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .signature-line {
+            border-bottom: 1px solid #000;
+            width: 200px;
+            height: 20px;
+            margin-top: 20px;
+        }
+        .footer-note {
+            font-size: 8px;
+            text-align: center;
+            margin-top: 20px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="paystub-container">
+        <div class="header">
+            <div class="company-name">{{ company_name }}</div>
+            <div class="company-address">{{ company_address|safe }}</div>
+            <div class="paystub-title">PAYROLL STATEMENT</div>
+        </div>
+
+        <div class="employee-pay-info">
+            <div class="employee-details">
+                <div><strong>Employee:</strong> {{ employee_name }}</div>
+                <div><strong>Employee ID:</strong> {{ employee_id }}</div>
+                <div><strong>Position:</strong> Staff</div>
+                <div><strong>Department:</strong> General</div>
+            </div>
+            <div class="pay-details">
+                <div><strong>Pay Period:</strong> {{ pay_period_start }} to {{ pay_period_end }}</div>
+                <div><strong>Pay Date:</strong> {{ pay_date }}</div>
+                <div><strong>Check Number:</strong> {{ check_number }}</div>
+                <div><strong>Pay Type:</strong> {{ pay_frequency }}</div>
+            </div>
+        </div>
+
+        <div class="earnings-deductions">
+            <div class="earnings-column">
+                <div class="column-header">EARNINGS</div>
+                <div class="line-item dotted">
+                    <span>Regular Hours ({{ regular_hours }})</span>
+                    <span>${{ regular_pay }}</span>
+                </div>
+                {% if overtime_hours != "0.0" %}
+                <div class="line-item dotted">
+                    <span>Overtime Hours ({{ overtime_hours }})</span>
+                    <span>${{ overtime_pay }}</span>
+                </div>
+                {% endif %}
+                <div class="line-item total-line">
+                    <span><strong>GROSS PAY</strong></span>
+                    <span><strong>${{ gross_pay }}</strong></span>
+                </div>
+            </div>
+
+            <div class="deductions-column">
+                <div class="column-header">DEDUCTIONS</div>
+                <div class="line-item dotted">
+                    <span>Federal Income Tax</span>
+                    <span>${{ federal_tax }}</span>
+                </div>
+                <div class="line-item dotted">
+                    <span>State Income Tax</span>
+                    <span>${{ state_tax }}</span>
+                </div>
+                <div class="line-item dotted">
+                    <span>Social Security</span>
+                    <span>${{ social_security }}</span>
+                </div>
+                <div class="line-item dotted">
+                    <span>Medicare</span>
+                    <span>${{ medicare }}</span>
+                </div>
+                {% if health_insurance %}
+                <div class="line-item dotted">
+                    <span>Health Insurance</span>
+                    <span>${{ health_insurance }}</span>
+                </div>
+                {% endif %}
+                {% if retirement %}
+                <div class="line-item dotted">
+                    <span>Retirement Plan</span>
+                    <span>${{ retirement }}</span>
+                </div>
+                {% endif %}
+                <div class="line-item total-line">
+                    <span><strong>TOTAL DEDUCTIONS</strong></span>
+                    <span><strong>${{ total_deductions }}</strong></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="net-pay-section">
+            <div class="net-pay-label">NET PAY</div>
+            <div class="net-pay-amount">${{ net_pay }}</div>
+        </div>
+
+        <div class="ytd-section">
+            <div class="ytd-title">YEAR-TO-DATE SUMMARY</div>
+            <div class="ytd-grid">
+                <div>
+                    <div class="line-item">
+                        <span>YTD Gross Earnings:</span>
+                        <span>${{ ytd_gross }}</span>
+                    </div>
+                    <div class="line-item">
+                        <span>YTD Federal Tax:</span>
+                        <span>${{ ytd_federal_tax }}</span>
+                    </div>
+                    <div class="line-item">
+                        <span>YTD State Tax:</span>
+                        <span>${{ (state_tax|float * 26)|round(2) }}</span>
+                    </div>
+                </div>
+                <div>
+                    <div class="line-item">
+                        <span>YTD Social Security:</span>
+                        <span>${{ (social_security|float * 26)|round(2) }}</span>
+                    </div>
+                    <div class="line-item">
+                        <span>YTD Medicare:</span>
+                        <span>${{ (medicare|float * 26)|round(2) }}</span>
+                    </div>
+                    <div class="line-item">
+                        <span>YTD Net Pay:</span>
+                        <span>${{ ytd_net }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="signature-section">
+            <div>
+                <div>Employee Signature:</div>
+                <div class="signature-line"></div>
+                <div style="margin-top: 5px; font-size: 8px;">Date: _______________</div>
+            </div>
+            <div>
+                <div>Employer Signature:</div>
+                <div class="signature-line"></div>
+                <div style="margin-top: 5px; font-size: 8px;">Date: _______________</div>
+            </div>
+        </div>
+
+        <div class="footer-note">
+            This document serves as official record of wages paid and deductions taken.<br>
+            Please retain this statement for tax preparation purposes.
+        </div>
+    </div>
+</body>
+</html>

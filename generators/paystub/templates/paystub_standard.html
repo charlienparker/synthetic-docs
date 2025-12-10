@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Payroll Statement</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            margin: 20px;
+            background: white;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .company-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .statement-title {
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .info-section {
+            margin: 15px 0;
+            border: 1px solid black;
+            padding: 10px;
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+        }
+        .section-title {
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid black;
+            padding-bottom: 3px;
+        }
+        .earnings-table, .deductions-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+        .earnings-table th, .deductions-table th,
+        .earnings-table td, .deductions-table td {
+            border: 1px solid black;
+            padding: 5px;
+            text-align: right;
+        }
+        .earnings-table th, .deductions-table th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+            text-align: center;
+        }
+        .description {
+            text-align: left !important;
+        }
+        .net-pay {
+            background-color: #e0e0e0;
+            font-weight: bold;
+            font-size: 14px;
+            padding: 10px;
+            text-align: center;
+            border: 2px solid black;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="company-name">{{ company_name }}</div>
+        <div class="statement-title">PAYROLL STATEMENT</div>
+    </div>
+    
+    <div class="info-section">
+        <div class="info-row">
+            <span><strong>Employee:</strong> {{ employee_name }}</span>
+            <span><strong>Employee ID:</strong> {{ employee_id }}</span>
+        </div>
+        <div class="info-row">
+            <span><strong>Pay Period:</strong> {{ pay_period_start }} - {{ pay_period_end }}</span>
+            <span><strong>Pay Date:</strong> {{ pay_date }}</span>
+        </div>
+        <div class="info-row">
+            <span><strong>Pay Frequency:</strong> {{ pay_frequency }}</span>
+            <span><strong>Check #:</strong> {{ check_number }}</span>
+        </div>
+    </div>
+    
+    <div class="section-title">EARNINGS</div>
+    <table class="earnings-table">
+        <thead>
+            <tr>
+                <th class="description">Description</th>
+                <th>Hours</th>
+                <th>Rate</th>
+                <th>Current</th>
+                <th>YTD</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="description">Regular</td>
+                <td>{{ regular_hours }}</td>
+                <td>${{ hourly_rate }}</td>
+                <td>${{ regular_pay }}</td>
+                <td>${{ ytd_gross }}</td>
+            </tr>
+            {% if overtime_hours != "0.0" %}
+            <tr>
+                <td class="description">Overtime</td>
+                <td>{{ overtime_hours }}</td>
+                <td>${{ overtime_rate }}</td>
+                <td>${{ overtime_pay }}</td>
+                <td>-</td>
+            </tr>
+            {% endif %}
+            <tr style="background-color: #f0f0f0; font-weight: bold;">
+                <td class="description">GROSS PAY</td>
+                <td>-</td>
+                <td>-</td>
+                <td>${{ gross_pay }}</td>
+                <td>${{ ytd_gross }}</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <div class="section-title">DEDUCTIONS</div>
+    <table class="deductions-table">
+        <thead>
+            <tr>
+                <th class="description">Description</th>
+                <th>Current</th>
+                <th>YTD</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="description">Federal Tax</td>
+                <td>${{ federal_tax }}</td>
+                <td>${{ ytd_federal_tax }}</td>
+            </tr>
+            <tr>
+                <td class="description">State Tax</td>
+                <td>${{ state_tax }}</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td class="description">Social Security</td>
+                <td>${{ social_security }}</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td class="description">Medicare</td>
+                <td>${{ medicare }}</td>
+                <td>-</td>
+            </tr>
+            {% if health_insurance %}
+            <tr>
+                <td class="description">Health Insurance</td>
+                <td>${{ health_insurance }}</td>
+                <td>-</td>
+            </tr>
+            {% endif %}
+            {% if retirement %}
+            <tr>
+                <td class="description">401(k) Contribution</td>
+                <td>${{ retirement }}</td>
+                <td>-</td>
+            </tr>
+            {% endif %}
+            <tr style="background-color: #f0f0f0; font-weight: bold;">
+                <td class="description">TOTAL DEDUCTIONS</td>
+                <td>${{ total_deductions }}</td>
+                <td>-</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <div class="net-pay">
+        NET PAY: ${{ net_pay }}
+    </div>
+</body>
+</html>
