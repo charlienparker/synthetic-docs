@@ -153,12 +153,16 @@ outputs/
 - **Generated employer data**: Company names, addresses, and EIN numbers using Faker
 - **Employee information**: Names, addresses, SSNs with format validation
 
+![synthetic_w2_0098](https://github.com/user-attachments/assets/09af88f8-7dcd-43b8-b3d9-daf744d38800)
+
 ### Paystubs
 - **Template variety**: Standard, ADP-style, QuickBooks, PayChex, Government, Traditional formats
 - **Color variations**: 8 different color schemes (currently applied to QuickBooks template)
 - **Tax calculations**: Federal/state taxes, Social Security, Medicare, insurance, retirement deductions
 - **Pay period support**: Bi-weekly, monthly, and semi-monthly with date calculations
 - **Data fields**: Employee information, earnings, deductions, year-to-date totals
+
+![synthetic_paystub_0096](https://github.com/user-attachments/assets/82849118-06d2-45ea-80ce-71f111775d70)
 
 ### Other Documents
 - **Driver's Licenses**: State-specific formats with generated personal information
@@ -168,19 +172,7 @@ outputs/
 - **Medical Summaries**: Medical document formats with generated medical terminology
 - **Report Cards**: Academic transcript format with grades and school information
 
-## Example Output
-
-*This section will be populated with sample images of generated documents.*
-
-<!-- TODO: Add example images showing:
-- W-2 with augmentation effects demonstrating realistic camera capture
-- Paystub samples showing different template styles and color schemes
-- Driver's license examples from different states
-- Store receipt with thermal printer styling
-- Medical document with professional formatting
-- Before/after augmentation comparison showing paper effects
-- Side-by-side comparison with real documents (redacted)
--->
+![synthetic_other_0094](https://github.com/user-attachments/assets/7b061243-784a-49b3-88f2-8c974cccbafe)
 
 ## Augmentation Pipeline
 
@@ -349,84 +341,6 @@ Example template structure:
 - `faker>=20.0.0` - Realistic synthetic data generation
 - `jinja2>=3.1.0` - Powerful template rendering engine
 - `numpy>=1.21.0` - Numerical computing foundation
-
-## Troubleshooting
-
-### Installation Issues
-
-**Dependency Installation Problems**:
-```bash
-# Upgrade pip and try again
-pip install --upgrade pip
-pip install -r requirements.txt --upgrade
-```
-
-**Augraphy Installation Failure**:
-```bash
-# Try conda installation (often more reliable)
-conda install -c conda-forge augraphy
-
-# Or install development version from source
-pip install git+https://github.com/sparkfish/augraphy.git
-```
-
-**WeasyPrint Installation Issues**:
-```bash
-# macOS: Install system dependencies
-brew install pango gdk-pixbuf libffi
-
-# Linux: Install system packages
-sudo apt-get install libpango-1.0-0 libharfbuzz0b libpangoft2-1.0-0
-```
-
-### Runtime Issues
-
-**Memory Errors**:
-```bash
-# Generate smaller batches
-python generate_synthetic_docs.py --w2_count 25 --paystub_count 25
-```
-
-**Permission Errors**:
-```bash
-# Ensure output directory is writable
-mkdir -p outputs && chmod 755 outputs
-```
-
-**Font Rendering Problems**:
-```bash
-# Install additional system fonts or check fonts/ directory
-fc-cache -f -v  # Linux/macOS font cache refresh
-```
-
-### Quality Issues
-
-- **Blurry Text**: Increase `DPI` setting in `config.py` (try 200-300)
-- **Unrealistic Colors**: Adjust color variation ranges in generator classes
-- **Poor Augmentation**: Modify `AUGMENTATION_INTENSITY` in configuration
-- **Template Errors**: Check HTML syntax and Jinja2 template variables
-
-## Contributing
-
-Priority areas for enhancement:
-
-### New Features
-- **Additional Document Types**: Insurance cards, bank statements, utility bills, tax forms (1099, 1040)
-- **Enhanced Templates**: More authentic styling, regional variations, historical formats
-- **Improved Data Generation**: More sophisticated financial calculations and realistic correlations
-- **Advanced Augmentation**: Additional camera effects, environmental conditions, age variations
-
-### Code Improvements  
-- **Performance Optimization**: Faster rendering, parallel processing, memory efficiency
-- **Template System**: Better inheritance, shared components, style libraries
-- **Testing Coverage**: Unit tests, integration tests, quality validation
-- **Documentation**: Code comments, API documentation, tutorial content
-
-### Getting Started with Contributions
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/new-document-type`)
-3. Make your changes and test thoroughly  
-4. Submit a pull request with detailed description
 
 ## License
 
