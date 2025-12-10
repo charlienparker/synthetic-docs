@@ -8,9 +8,7 @@ import random
 from datetime import datetime, timedelta
 import sys
 
-# Add parent directory to path for base_generator import
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..'))
-from base_generator import BaseDocumentGenerator
+from ..base_generator import BaseDocumentGenerator
 
 
 class PaystubGenerator(BaseDocumentGenerator):

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Medical Visit Summary</title>
+    <style>
+        @page {
+            size: 8.5in 11in;
+            margin: 0.75in;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 10px;
+            line-height: 1.4;
+            margin: 0;
+            padding: 0;
+            background: white;
+            color: #333;
+        }
+        .medical-document {
+            max-width: 7in;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #0066cc;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        .clinic-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #0066cc;
+            margin-bottom: 5px;
+        }
+        .clinic-info {
+            font-size: 9px;
+            color: #666;
+            margin: 2px 0;
+        }
+        .document-title {
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+            text-decoration: underline;
+        }
+        .info-section {
+            margin: 15px 0;
+            border: 1px solid #ddd;
+            padding: 10px;
+            background: #f9f9f9;
+        }
+        .section-title {
+            font-size: 11px;
+            font-weight: bold;
+            color: #0066cc;
+            margin-bottom: 8px;
+            text-decoration: underline;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .info-item {
+            display: flex;
+            margin: 3px 0;
+        }
+        .label {
+            font-weight: bold;
+            min-width: 80px;
+            color: #333;
+        }
+        .value {
+            color: #000;
+        }
+        .full-width {
+            grid-column: 1 / -1;
+        }
+        .notes-section {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 15px 0;
+            min-height: 100px;
+            background: white;
+        }
+        .signature-section {
+            margin-top: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        .signature-box {
+            text-align: center;
+        }
+        .signature-line {
+            border-bottom: 1px solid #333;
+            margin-bottom: 5px;
+            height: 30px;
+        }
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 8px;
+            color: #666;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+        }
+        .prescription-box {
+            border: 2px solid #ff6b35;
+            background: #fff8f5;
+            padding: 10px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="medical-document">
+        <div class="header">
+            <div class="clinic-name">{{ clinic_name }}</div>
+            <div class="clinic-info">{{ clinic_address }}</div>
+            <div class="clinic-info">Phone: {{ clinic_phone | default('(555) 123-4567') }}</div>
+            <div class="clinic-info">Fax: {{ clinic_fax | default('(555) 123-4568') }}</div>
+        </div>
+        
+        <div class="document-title">PATIENT VISIT SUMMARY</div>
+        
+        <div class="info-section">
+            <div class="section-title">PATIENT INFORMATION</div>
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="label">Patient:</span>
+                    <span class="value">{{ patient_name }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Date of Birth:</span>
+                    <span class="value">{{ patient_dob }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Visit Date:</span>
+                    <span class="value">{{ visit_date }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Insurance:</span>
+                    <span class="value">{{ insurance }}</span>
+                </div>
+                <div class="info-item full-width">
+                    <span class="label">Address:</span>
+                    <span class="value">{{ patient_address }}</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="info-section">
+            <div class="section-title">PROVIDER INFORMATION</div>
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="label">Provider:</span>
+                    <span class="value">{{ doctor_name }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">License #:</span>
+                    <span class="value">{{ license_number | default('MD12345') }}</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="info-section">
+            <div class="section-title">VISIT DETAILS</div>
+            <div class="info-item">
+                <span class="label">Chief Complaint:</span>
+                <span class="value">{{ diagnosis }}</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Vital Signs:</span>
+                <span class="value">BP: {{ bp | default('120/80') }}, Pulse: {{ pulse | default('72') }}, Temp: {{ temp | default('98.6°F') }}</span>
+            </div>
+        </div>
+        
+        <div class="notes-section">
+            <div class="section-title">CLINICAL NOTES</div>
+            <p>Patient presented for {{ diagnosis.lower() }}. Physical examination revealed normal findings within expected parameters. Patient is advised to continue current treatment plan and return for follow-up as scheduled.</p>
+            <p>Discussed treatment options and answered patient questions. Patient understanding confirmed.</p>
+        </div>
+        
+        {% if prescription != 'None prescribed' %}
+        <div class="prescription-box">
+            <div class="section-title">PRESCRIPTION</div>
+            <div class="info-item">
+                <span class="label">Medication:</span>
+                <span class="value">{{ prescription }}</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Instructions:</span>
+                <span class="value">Take as directed. Complete full course of medication.</span>
+            </div>
+        </div>
+        {% endif %}
+        
+        <div class="info-section">
+            <div class="section-title">FOLLOW-UP</div>
+            <div class="info-item">
+                <span class="label">Next Appointment:</span>
+                <span class="value">{{ next_visit }}</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Instructions:</span>
+                <span class="value">Continue current medications. Contact office if symptoms worsen.</span>
+            </div>
+        </div>
+        
+        <div class="signature-section">
+            <div class="signature-box">
+                <div class="signature-line"></div>
+                <div>{{ doctor_name }}</div>
+                <div>{{ visit_date }}</div>
+            </div>
+            <div class="signature-box">
+                <div class="signature-line"></div>
+                <div>Patient Signature</div>
+                <div>Date</div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            This document contains confidential medical information protected by HIPAA.<br>
+            {{ clinic_name }} - Medical Record #{{ record_number | default('MR' + visit_date.replace('/', '')) }}
+        </div>
+    </div>
+</body>
+</html>

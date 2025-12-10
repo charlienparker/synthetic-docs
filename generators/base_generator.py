@@ -14,6 +14,9 @@ from augraphy import (
 )
 import random
 from datetime import datetime, timedelta
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from config import Config
 from abc import ABC, abstractmethod
 import tempfile

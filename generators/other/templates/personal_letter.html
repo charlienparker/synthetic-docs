@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Personal Letter</title>
+    <style>
+        @page {
+            size: 8.5in 11in;
+            margin: 1in;
+        }
+        body {
+            font-family: "Times New Roman", serif;
+            font-size: 12px;
+            line-height: 1.5;
+            margin: 0;
+            padding: 0;
+            background: white;
+            color: #333;
+        }
+        .letter {
+            max-width: 6.5in;
+            margin: 0 auto;
+        }
+        .sender-address {
+            text-align: right;
+            margin-bottom: 30px;
+            font-size: 11px;
+        }
+        .date {
+            text-align: right;
+            margin-bottom: 30px;
+            font-size: 11px;
+        }
+        .recipient-address {
+            margin-bottom: 30px;
+            font-size: 11px;
+        }
+        .subject-line {
+            font-weight: bold;
+            text-decoration: underline;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .salutation {
+            margin-bottom: 20px;
+        }
+        .body-paragraph {
+            margin-bottom: 15px;
+            text-align: justify;
+            text-indent: 20px;
+        }
+        .closing {
+            margin-top: 30px;
+            margin-bottom: 80px;
+        }
+        .signature-line {
+            margin-top: 60px;
+            border-bottom: 1px solid #333;
+            width: 200px;
+        }
+        .typed-name {
+            margin-top: 5px;
+            font-size: 11px;
+        }
+        .business-style {
+            font-family: Arial, sans-serif;
+            font-size: 11px;
+            line-height: 1.4;
+        }
+        .letterhead {
+            text-align: center;
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="letter {% if letter_type == 'business' %}business-style{% endif %}">
+        {% if letter_type == 'business' %}
+        <div class="letterhead">
+            {{ sender_name }}<br>
+            <span style="font-size: 10px;">{{ sender_address }}</span>
+        </div>
+        {% else %}
+        <div class="sender-address">
+            {{ sender_name }}<br>
+            {{ sender_address }}
+        </div>
+        {% endif %}
+        
+        <div class="date">{{ date }}</div>
+        
+        <div class="recipient-address">
+            {{ recipient_name }}<br>
+            {{ recipient_address }}
+        </div>
+        
+        {% if letter_type == 'business' %}
+        <div class="subject-line">Re: {{ subject }}</div>
+        {% endif %}
+        
+        <div class="salutation">{{ salutation }} {{ recipient_name.split(' ')[0] }},</div>
+        
+        <div class="body-paragraph">
+            {{ body_paragraph_1 }}
+        </div>
+        
+        <div class="body-paragraph">
+            {{ body_paragraph_2 }}
+        </div>
+        
+        <div class="body-paragraph">
+            {{ body_paragraph_3 }}
+        </div>
+        
+        <div class="closing">
+            {{ closing }},<br>
+            <div class="signature-line"></div>
+            <div class="typed-name">{{ sender_name }}</div>
+        </div>
+    </div>
+</body>
+</html>

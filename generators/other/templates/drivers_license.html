@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Driver's License</title>
+    <style>
+        @page {
+            size: 3.375in 2.125in;
+            margin: 0;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 8px;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(45deg, #e3f2fd, #bbdefb);
+            width: 3.375in;
+            height: 2.125in;
+            position: relative;
+            overflow: hidden;
+        }
+        .license-card {
+            width: 100%;
+            height: 100%;
+            border: 2px solid #1976d2;
+            box-sizing: border-box;
+            padding: 8px;
+            position: relative;
+        }
+        .state-header {
+            text-align: center;
+            font-weight: bold;
+            font-size: 12px;
+            color: #1976d2;
+            margin-bottom: 3px;
+        }
+        .license-title {
+            text-align: center;
+            font-size: 9px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .photo-section {
+            position: absolute;
+            right: 8px;
+            top: 25px;
+            width: 60px;
+            height: 75px;
+            border: 1px solid #666;
+            background: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 6px;
+            color: #666;
+        }
+        .info-section {
+            width: 200px;
+            margin-top: 5px;
+        }
+        .info-row {
+            margin-bottom: 2px;
+            display: flex;
+        }
+        .label {
+            font-weight: bold;
+            font-size: 6px;
+            width: 60px;
+            color: #333;
+        }
+        .value {
+            font-size: 8px;
+            flex: 1;
+            color: #000;
+        }
+        .license-number {
+            font-size: 10px;
+            font-weight: bold;
+            color: #1976d2;
+            text-align: center;
+            margin: 3px 0;
+        }
+        .restrictions {
+            position: absolute;
+            bottom: 25px;
+            left: 8px;
+            font-size: 6px;
+            color: #666;
+        }
+        .endorsements {
+            position: absolute;
+            bottom: 15px;
+            left: 8px;
+            font-size: 6px;
+            color: #666;
+        }
+        .security-features {
+            position: absolute;
+            bottom: 5px;
+            right: 8px;
+            font-size: 5px;
+            color: #999;
+        }
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 24px;
+            color: rgba(25, 118, 210, 0.1);
+            font-weight: bold;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+    <div class="license-card">
+        <div class="watermark">{{ state_abbr }}</div>
+        
+        <div class="state-header">{{ state_name }}</div>
+        <div class="license-title">DRIVER LICENSE</div>
+        
+        <div class="photo-section">
+            PHOTO
+        </div>
+        
+        <div class="info-section">
+            <div class="license-number">{{ license_number }}</div>
+            
+            <div class="info-row">
+                <span class="label">LN:</span>
+                <span class="value">{{ last_name }}</span>
+            </div>
+            
+            <div class="info-row">
+                <span class="label">FN:</span>
+                <span class="value">{{ first_name }}</span>
+            </div>
+            
+            <div class="info-row">
+                <span class="label">ADDR:</span>
+                <span class="value">{{ address }}</span>
+            </div>
+            
+            <div class="info-row">
+                <span class="value">{{ city }}, {{ state }} {{ zip_code }}</span>
+            </div>
+            
+            <div class="info-row">
+                <span class="label">DOB:</span>
+                <span class="value">{{ birth_date }}</span>
+                <span class="label">SEX:</span>
+                <span class="value">{{ sex }}</span>
+            </div>
+            
+            <div class="info-row">
+                <span class="label">HGT:</span>
+                <span class="value">{{ height }}</span>
+                <span class="label">WGT:</span>
+                <span class="value">{{ weight }}</span>
+            </div>
+            
+            <div class="info-row">
+                <span class="label">EYES:</span>
+                <span class="value">{{ eye_color }}</span>
+                <span class="label">CLASS:</span>
+                <span class="value">{{ class }}</span>
+            </div>
+            
+            <div class="info-row">
+                <span class="label">ISS:</span>
+                <span class="value">{{ issue_date }}</span>
+                <span class="label">EXP:</span>
+                <span class="value">{{ exp_date }}</span>
+            </div>
+        </div>
+        
+        <div class="restrictions">
+            <strong>RESTR:</strong> {{ restrictions }}
+        </div>
+        
+        <div class="endorsements">
+            <strong>DONOR:</strong> {{ donor }}
+        </div>
+        
+        <div class="security-features">
+            {{ state_abbr }}-DL-{{ license_number[:4] }}
+        </div>
+    </div>
+</body>
+</html>

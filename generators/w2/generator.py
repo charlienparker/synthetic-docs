@@ -8,9 +8,7 @@ import random
 from datetime import datetime
 import sys
 
-# Add parent directory to path for base_generator import
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..'))
-from base_generator import BaseDocumentGenerator
+from ..base_generator import BaseDocumentGenerator
 
 
 class W2Generator(BaseDocumentGenerator):
@@ -57,8 +55,12 @@ class W2Generator(BaseDocumentGenerator):
         employee_last_name = self.fake.last_name()
         employee_address = self.fake.address().replace('\n', '<br>')
         
+        # Generate random tax year from modern era (2000-current year)
+        current_year = datetime.now().year
+        tax_year = random.randint(2000, current_year)
+        
         return {
-            'tax_year': datetime.now().year - 1,
+            'tax_year': tax_year,
             'employee_ssn': self.fake.ssn(),
             'employee_first_name': employee_first_name,
             'employee_last_name': employee_last_name,
@@ -66,6 +68,7 @@ class W2Generator(BaseDocumentGenerator):
             'employer_ein': f"{random.randint(10,99)}-{random.randint(1000000,9999999)}",
             'employer_name': employer_name,
             'employer_address': employer_address,
+            'employer_state_id': f"{random.randint(100000,999999)}",
             'control_number': f"{random.randint(10000,99999)}",
             'wages': f"{annual_wages:,.2f}",
             'federal_tax_withheld': f"{federal_withholding:,.2f}",

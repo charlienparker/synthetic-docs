@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Student Report Card</title>
+    <style>
+        @page {
+            size: 8.5in 11in;
+            margin: 0.5in;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 10px;
+            line-height: 1.3;
+            margin: 0;
+            padding: 0;
+            background: white;
+            color: #333;
+        }
+        .report-card {
+            max-width: 7.5in;
+            margin: 0 auto;
+            border: 3px solid #2c5aa0;
+        }
+        .header {
+            background: linear-gradient(135deg, #2c5aa0, #4a90e2);
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        .school-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .document-title {
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .student-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #2c5aa0;
+        }
+        .info-section {
+            margin: 0;
+        }
+        .section-title {
+            font-size: 11px;
+            font-weight: bold;
+            color: #2c5aa0;
+            margin-bottom: 5px;
+            text-decoration: underline;
+        }
+        .info-item {
+            display: flex;
+            margin: 3px 0;
+        }
+        .label {
+            font-weight: bold;
+            min-width: 80px;
+        }
+        .value {
+            color: #000;
+        }
+        .grades-section {
+            padding: 20px;
+        }
+        .grades-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #2c5aa0;
+            text-align: center;
+            margin-bottom: 15px;
+            text-decoration: underline;
+        }
+        .grades-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .grades-table th {
+            background: #2c5aa0;
+            color: white;
+            padding: 8px;
+            text-align: left;
+            font-weight: bold;
+        }
+        .grades-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        .grades-table td:first-child {
+            text-align: left;
+            font-weight: bold;
+        }
+        .grade-a { background: #d4edda; color: #155724; }
+        .grade-b { background: #d1ecf1; color: #0c5460; }
+        .grade-c { background: #fff3cd; color: #856404; }
+        .grade-d { background: #f8d7da; color: #721c24; }
+        .summary-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            padding: 0 20px 20px 20px;
+        }
+        .summary-box {
+            border: 2px solid #2c5aa0;
+            padding: 10px;
+            background: #f8f9fa;
+        }
+        .gpa-display {
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            color: #2c5aa0;
+        }
+        .comments-section {
+            margin: 20px;
+            border: 2px solid #28a745;
+            background: #f8fff9;
+            padding: 15px;
+        }
+        .comments-title {
+            font-size: 11px;
+            font-weight: bold;
+            color: #28a745;
+            margin-bottom: 8px;
+        }
+        .signature-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            padding: 20px;
+            border-top: 2px solid #2c5aa0;
+            background: #f8f9fa;
+        }
+        .signature-box {
+            text-align: center;
+        }
+        .signature-line {
+            border-bottom: 1px solid #333;
+            margin-bottom: 5px;
+            height: 25px;
+        }
+        .grading-scale {
+            font-size: 8px;
+            text-align: center;
+            color: #666;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="report-card">
+        <div class="header">
+            <div class="school-name">{{ school_name }}</div>
+            <div class="document-title">STUDENT REPORT CARD</div>
+        </div>
+        
+        <div class="student-info">
+            <div class="info-section">
+                <div class="section-title">STUDENT INFORMATION</div>
+                <div class="info-item">
+                    <span class="label">Student:</span>
+                    <span class="value">{{ student_name }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Grade:</span>
+                    <span class="value">{{ grade_level }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Teacher:</span>
+                    <span class="value">{{ teacher_name }}</span>
+                </div>
+            </div>
+            <div class="info-section">
+                <div class="section-title">REPORTING PERIOD</div>
+                <div class="info-item">
+                    <span class="label">Semester:</span>
+                    <span class="value">{{ semester }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Attendance:</span>
+                    <span class="value">{{ attendance }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Overall GPA:</span>
+                    <span class="value">{{ overall_gpa }}</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="grades-section">
+            <div class="grades-title">ACADEMIC PERFORMANCE</div>
+            
+            <table class="grades-table">
+                <thead>
+                    <tr>
+                        <th>Subject</th>
+                        <th>Grade</th>
+                        <th>Comments</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for grade in grades %}
+                    <tr>
+                        <td>{{ grade.subject }}</td>
+                        <td class="{% if grade.grade.startswith('A') %}grade-a{% elif grade.grade.startswith('B') %}grade-b{% elif grade.grade.startswith('C') %}grade-c{% else %}grade-d{% endif %}">
+                            {{ grade.grade }}
+                        </td>
+                        <td style="text-align: left; font-size: 9px;">{{ grade.comments }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+            <div class="grading-scale">
+                Grading Scale: A = 90-100% (Excellent) | B = 80-89% (Good) | C = 70-79% (Satisfactory) | D = 60-69% (Needs Improvement) | F = Below 60% (Unsatisfactory)
+            </div>
+        </div>
+        
+        <div class="summary-section">
+            <div class="summary-box">
+                <div class="section-title">SEMESTER GPA</div>
+                <div class="gpa-display">{{ overall_gpa }}</div>
+                <div style="text-align: center; font-size: 9px; margin-top: 5px;">
+                    {% if overall_gpa|float >= 3.5 %}Honor Roll{% elif overall_gpa|float >= 3.0 %}Good Standing{% else %}Needs Improvement{% endif %}
+                </div>
+            </div>
+            <div class="summary-box">
+                <div class="section-title">ATTENDANCE</div>
+                <div class="gpa-display">{{ attendance }}</div>
+                <div style="text-align: center; font-size: 9px; margin-top: 5px;">
+                    Days Present: {{ (attendance|replace('%', '')|float * 1.8)|round|int }}/180
+                </div>
+            </div>
+        </div>
+        
+        <div class="comments-section">
+            <div class="comments-title">TEACHER COMMENTS</div>
+            <p>{{ student_name.split(' ')[0] }} has shown consistent effort throughout the semester. {% if overall_gpa|float >= 3.5 %}Excellent academic performance and positive attitude in class.{% elif overall_gpa|float >= 3.0 %}Good progress with room for continued growth.{% else %}Encouragement needed to reach full potential.{% endif %}</p>
+            <p>Areas of strength include participation and homework completion. Continue to encourage reading at home for continued academic success.</p>
+        </div>
+        
+        <div class="signature-section">
+            <div class="signature-box">
+                <div class="signature-line"></div>
+                <div style="font-size: 9px; font-weight: bold;">Teacher</div>
+                <div style="font-size: 8px;">{{ teacher_name }}</div>
+            </div>
+            <div class="signature-box">
+                <div class="signature-line"></div>
+                <div style="font-size: 9px; font-weight: bold;">Principal</div>
+                <div style="font-size: 8px;">{{ principal_name | default('Dr. ' + teacher_name.split(' ')[-1]) }}</div>
+            </div>
+            <div class="signature-box">
+                <div class="signature-line"></div>
+                <div style="font-size: 9px; font-weight: bold;">Parent/Guardian</div>
+                <div style="font-size: 8px;">Date</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

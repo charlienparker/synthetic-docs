@@ -2,199 +2,419 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>W-2 Wage and Tax Statement</title>
+    <title>Form W-2 Wage and Tax Statement</title>
     <style>
+        @page {
+            size: 8.5in 5.5in;
+            margin: 0;
+        }
         body {
-            font-family: Arial, sans-serif;
-            font-size: 10px;
-            margin: 20px;
+            font-family: "Courier New", monospace;
+            font-size: 8px;
+            margin: 0;
+            padding: 0;
+            background: white;
+            line-height: 1.0;
+            width: 8.5in;
+            height: 5.5in;
+        }
+        .w2-form {
+            width: 8.5in;
+            height: 5.5in;
+            border: 3px solid black;
+            box-sizing: border-box;
+            position: relative;
             background: white;
         }
-        .form-title {
-            text-align: center;
+        .tax-year {
+            position: absolute;
+            top: 8px;
+            right: 15px;
             font-size: 16px;
             font-weight: bold;
-            margin-bottom: 10px;
+            border: 2px solid black;
+            padding: 3px 8px;
+            background: white;
         }
-        .year {
-            float: right;
-            font-size: 14px;
+        .omb-info {
+            position: absolute;
+            top: 8px;
+            left: 15px;
+            font-size: 7px;
+        }
+        .form-header {
+            text-align: center;
+            margin: 35px 0 15px 0;
+        }
+        .form-number {
+            font-size: 20px;
             font-weight: bold;
+            letter-spacing: 3px;
         }
-        .box {
+        .form-title {
+            font-size: 10px;
+            font-weight: bold;
+            margin: 2px 0;
+        }
+        .copy-notice {
+            font-size: 6px;
+            text-align: center;
+            margin: 5px 15px;
+            line-height: 1.1;
+        }
+        .main-section {
+            margin: 0 15px;
+        }
+        /* Exact W-2 grid layout */
+        .info-row {
+            display: table;
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .info-cell {
+            display: table-cell;
             border: 1px solid black;
-            padding: 5px;
-            margin: 2px;
-            height: 40px;
-            display: inline-block;
+            padding: 3px;
             vertical-align: top;
+            font-size: 7px;
         }
-        .box-label {
-            font-size: 8px;
+        .info-cell-wide {
+            width: 50%;
+        }
+        .info-cell-label {
             font-weight: bold;
+            font-size: 6px;
             margin-bottom: 2px;
         }
-        .box-value {
-            font-size: 10px;
+        .info-cell-value {
+            font-size: 8px;
+            min-height: 12px;
         }
-        .wide-box {
-            width: 300px;
+        /* Employee name row special layout */
+        .name-row {
+            display: flex;
         }
-        .narrow-box {
-            width: 200px;
+        .name-first {
+            flex: 0 0 40%;
+            border: 1px solid black;
+            padding: 3px;
         }
-        .row {
-            clear: both;
-            margin: 5px 0;
+        .name-last {
+            flex: 0 0 40%;
+            border: 1px solid black;
+            border-left: none;
+            padding: 3px;
         }
-        .left-col {
-            float: left;
-            width: 320px;
+        .name-suffix {
+            flex: 0 0 20%;
+            border: 1px solid black;
+            border-left: none;
+            padding: 3px;
         }
-        .right-col {
-            float: right;
-            width: 320px;
+        /* Wage boxes - precise 6-column grid */
+        .wage-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 0;
+            margin: 8px 0;
         }
         .wage-box {
-            width: 140px;
-            height: 50px;
-            margin: 3px;
+            border: 1px solid black;
+            padding: 2px;
+            min-height: 25px;
+            position: relative;
+        }
+        .wage-box:not(:first-child) {
+            border-left: none;
+        }
+        .wage-label {
+            font-size: 6px;
+            font-weight: bold;
+            line-height: 1.0;
+            margin-bottom: 1px;
+        }
+        .wage-value {
+            font-size: 8px;
+            margin-top: 2px;
+        }
+        /* Box 12 special layout */
+        .box12-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
+            margin: 2px 0;
+        }
+        .box12-item {
+            border: 1px solid black;
+            padding: 2px;
+            min-height: 20px;
+            display: flex;
+            align-items: center;
+        }
+        .box12-item:not(:first-child) {
+            border-left: none;
+        }
+        .box12-code {
+            width: 15px;
+            height: 15px;
+            border: 1px solid black;
+            margin-right: 3px;
+            text-align: center;
+            font-size: 7px;
+            line-height: 15px;
+        }
+        /* Box 13 checkboxes */
+        .box13-checkboxes {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .checkbox-line {
+            display: flex;
+            align-items: center;
+            font-size: 5px;
+        }
+        .mini-checkbox {
+            width: 6px;
+            height: 6px;
+            border: 1px solid black;
+            margin-right: 2px;
+        }
+        /* Box 14 */
+        .box14 {
+            border: 1px solid black;
+            padding: 3px;
+            min-height: 20px;
+            margin: 2px 0;
+        }
+        /* State/Local grid - precise 7-column layout */
+        .state-grid {
+            display: grid;
+            grid-template-columns: 60px 100px 80px 80px 80px 80px 80px;
+            gap: 0;
+            margin: 5px 0;
         }
         .state-box {
-            width: 100px;
-            height: 40px;
-            margin: 2px;
+            border: 1px solid black;
+            padding: 2px;
+            min-height: 18px;
+        }
+        .state-box:not(:first-child) {
+            border-left: none;
+        }
+        .state-label {
+            font-size: 5px;
+            font-weight: bold;
+            line-height: 1.0;
+        }
+        .state-value {
+            font-size: 7px;
+            margin-top: 1px;
+        }
+        .dept-footer {
+            text-align: center;
+            font-size: 6px;
+            margin-top: 8px;
+            border-top: 1px solid black;
+            padding-top: 2px;
         }
     </style>
 </head>
 <body>
-    <div class="year">{{ tax_year }}</div>
-    <div class="form-title">W-2 Wage and Tax Statement</div>
-    <div style="clear: both;"></div>
-    
-    <!-- Employee and Employer Information -->
-    <div class="row">
-        <div class="box wide-box">
-            <div class="box-label">a Employee's social security number</div>
-            <div class="box-value">{{ employee_ssn }}</div>
+    <div class="w2-form">
+        <div class="omb-info">OMB No. 1545-0008</div>
+        <div class="tax-year">{{ tax_year }}</div>
+        
+        <div class="form-header">
+            <div class="form-number">Form W-2</div>
+            <div class="form-title">Wage and Tax Statement</div>
         </div>
-        <div class="box wide-box">
-            <div class="box-label">b Employer identification number (EIN)</div>
-            <div class="box-value">{{ employer_ein }}</div>
+        
+        <div class="copy-notice">
+            Copy A For Social Security Administration — Send this entire page with<br>
+            Form W-3 to the Social Security Administration; photocopies are not acceptable.
         </div>
-    </div>
-    
-    <div class="row">
-        <div class="box wide-box">
-            <div class="box-label">c Employer's name, address, and ZIP code</div>
-            <div class="box-value">{{ employer_name }}<br>{{ employer_address }}</div>
-        </div>
-        <div class="box wide-box">
-            <div class="box-label">d Control number</div>
-            <div class="box-value">{{ control_number }}</div>
-        </div>
-    </div>
-    
-    <div class="row">
-        <div class="box narrow-box">
-            <div class="box-label">e Employee's first name and initial</div>
-            <div class="box-value">{{ employee_first_name }}</div>
-        </div>
-        <div class="box narrow-box">
-            <div class="box-label">Last name</div>
-            <div class="box-value">{{ employee_last_name }}</div>
-        </div>
-        <div class="box narrow-box">
-            <div class="box-label">Suff.</div>
-            <div class="box-value"></div>
-        </div>
-    </div>
-    
-    <div class="row">
-        <div class="box wide-box">
-            <div class="box-label">f Employee's address and ZIP code</div>
-            <div class="box-value">{{ employee_address }}</div>
-        </div>
-    </div>
-    
-    <!-- Wage and Tax Information -->
-    <div style="margin-top: 20px;">
-        <div class="left-col">
-            <div class="box wage-box">
-                <div class="box-label">1 Wages, tips, other compensation</div>
-                <div class="box-value">${{ wages }}</div>
+        
+        <div class="main-section">
+            <!-- SSN and EIN row -->
+            <div class="info-row">
+                <div class="info-cell info-cell-wide">
+                    <div class="info-cell-label">a Employee's social security number</div>
+                    <div class="info-cell-value">{{ employee_ssn }}</div>
+                </div>
+                <div class="info-cell info-cell-wide">
+                    <div class="info-cell-label">b Employer identification number (EIN)</div>
+                    <div class="info-cell-value">{{ employer_ein }}</div>
+                </div>
             </div>
-            <div class="box wage-box">
-                <div class="box-label">2 Federal income tax withheld</div>
-                <div class="box-value">${{ federal_tax_withheld }}</div>
+            
+            <!-- Employer info and control number row -->
+            <div class="info-row">
+                <div class="info-cell info-cell-wide">
+                    <div class="info-cell-label">c Employer's name, address, and ZIP code</div>
+                    <div class="info-cell-value">{{ employer_name }}<br>{{ employer_address }}</div>
+                </div>
+                <div class="info-cell info-cell-wide">
+                    <div class="info-cell-label">d Control number</div>
+                    <div class="info-cell-value">{{ control_number }}</div>
+                </div>
             </div>
-            <div class="box wage-box">
-                <div class="box-label">3 Social security wages</div>
-                <div class="box-value">${{ social_security_wages }}</div>
+            
+            <!-- Employee name row -->
+            <div class="name-row">
+                <div class="name-first">
+                    <div class="info-cell-label">e Employee's first name and initial</div>
+                    <div class="info-cell-value">{{ employee_first_name }}</div>
+                </div>
+                <div class="name-last">
+                    <div class="info-cell-label">Last name</div>
+                    <div class="info-cell-value">{{ employee_last_name }}</div>
+                </div>
+                <div class="name-suffix">
+                    <div class="info-cell-label">Suff.</div>
+                    <div class="info-cell-value"></div>
+                </div>
             </div>
-            <div class="box wage-box">
-                <div class="box-label">4 Social security tax withheld</div>
-                <div class="box-value">${{ social_security_tax }}</div>
+            
+            <!-- Employee address row -->
+            <div class="info-row">
+                <div class="info-cell">
+                    <div class="info-cell-label">f Employee's address and ZIP code</div>
+                    <div class="info-cell-value">{{ employee_address }}</div>
+                </div>
             </div>
-            <div class="box wage-box">
-                <div class="box-label">5 Medicare wages and tips</div>
-                <div class="box-value">${{ medicare_wages }}</div>
+            
+            <!-- Main wage boxes - boxes 1-6, 7-8, blank, 10-11 -->
+            <div class="wage-grid">
+                <div class="wage-box">
+                    <div class="wage-label">1 Wages, tips, other compensation</div>
+                    <div class="wage-value">${{ wages }}</div>
+                </div>
+                <div class="wage-box">
+                    <div class="wage-label">2 Federal income tax withheld</div>
+                    <div class="wage-value">${{ federal_tax_withheld }}</div>
+                </div>
+                <div class="wage-box">
+                    <div class="wage-label">3 Social security wages</div>
+                    <div class="wage-value">${{ social_security_wages }}</div>
+                </div>
+                <div class="wage-box">
+                    <div class="wage-label">4 Social security tax withheld</div>
+                    <div class="wage-value">${{ social_security_tax }}</div>
+                </div>
+                <div class="wage-box">
+                    <div class="wage-label">5 Medicare wages and tips</div>
+                    <div class="wage-value">${{ medicare_wages }}</div>
+                </div>
+                <div class="wage-box">
+                    <div class="wage-label">6 Medicare tax withheld</div>
+                    <div class="wage-value">${{ medicare_tax }}</div>
+                </div>
+                
+                <div class="wage-box">
+                    <div class="wage-label">7 Social security tips</div>
+                    <div class="wage-value">{% if social_security_tips and social_security_tips != "0.00" %}${{ social_security_tips }}{% endif %}</div>
+                </div>
+                <div class="wage-box">
+                    <div class="wage-label">8 Allocated tips</div>
+                    <div class="wage-value">{% if allocated_tips and allocated_tips != "0.00" %}${{ allocated_tips }}{% endif %}</div>
+                </div>
+                <div class="wage-box">
+                    <div class="wage-label">9</div>
+                    <div class="wage-value"></div>
+                </div>
+                <div class="wage-box">
+                    <div class="wage-label">10 Dependent care benefits</div>
+                    <div class="wage-value">{% if dependent_care_benefits and dependent_care_benefits != "0.00" %}${{ dependent_care_benefits }}{% endif %}</div>
+                </div>
+                <div class="wage-box">
+                    <div class="wage-label">11 Nonqualified plans</div>
+                    <div class="wage-value">{% if nonqualified_plans and nonqualified_plans != "0.00" %}${{ nonqualified_plans }}{% endif %}</div>
+                </div>
+                <div class="wage-box">
+                    <div class="wage-label">13</div>
+                    <div class="box13-checkboxes">
+                        <div class="checkbox-line">
+                            <div class="mini-checkbox"></div>
+                            <span>Statutory employee</span>
+                        </div>
+                        <div class="checkbox-line">
+                            <div class="mini-checkbox"></div>
+                            <span>Retirement plan</span>
+                        </div>
+                        <div class="checkbox-line">
+                            <div class="mini-checkbox"></div>
+                            <span>Third-party sick pay</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="box wage-box">
-                <div class="box-label">6 Medicare tax withheld</div>
-                <div class="box-value">${{ medicare_tax }}</div>
+            
+            <!-- Box 12 codes -->
+            <div class="box12-grid">
+                <div class="box12-item">
+                    <div class="wage-label">12a See instructions for box 12</div>
+                    <div class="box12-code"></div>
+                </div>
+                <div class="box12-item">
+                    <div class="wage-label">12b</div>
+                    <div class="box12-code"></div>
+                </div>
+                <div class="box12-item">
+                    <div class="wage-label">12c</div>
+                    <div class="box12-code"></div>
+                </div>
+                <div class="box12-item">
+                    <div class="wage-label">12d</div>
+                    <div class="box12-code"></div>
+                </div>
+            </div>
+            
+            <!-- Box 14 -->
+            <div class="box14">
+                <div class="wage-label">14 Other (see instructions)</div>
+                <div class="wage-value"></div>
+            </div>
+            
+            <!-- State and Local section -->
+            <div class="state-grid">
+                <div class="state-box">
+                    <div class="state-label">15 State</div>
+                    <div class="state-value">{{ state }}</div>
+                </div>
+                <div class="state-box">
+                    <div class="state-label">Employer's state ID number</div>
+                    <div class="state-value">{{ employer_state_id }}</div>
+                </div>
+                <div class="state-box">
+                    <div class="state-label">16 State wages, tips, etc.</div>
+                    <div class="state-value">${{ state_wages }}</div>
+                </div>
+                <div class="state-box">
+                    <div class="state-label">17 State income tax</div>
+                    <div class="state-value">${{ state_tax_withheld }}</div>
+                </div>
+                <div class="state-box">
+                    <div class="state-label">18 Local wages, tips, etc.</div>
+                    <div class="state-value">{% if local_wages %}${{ local_wages }}{% endif %}</div>
+                </div>
+                <div class="state-box">
+                    <div class="state-label">19 Local income tax</div>
+                    <div class="state-value">{% if local_tax %}${{ local_tax }}{% endif %}</div>
+                </div>
+                <div class="state-box">
+                    <div class="state-label">20 Locality name</div>
+                    <div class="state-value">{{ locality_name }}</div>
+                </div>
+            </div>
+            
+            <div class="dept-footer">
+                Department of the Treasury—Internal Revenue Service
             </div>
         </div>
         
-        <div class="right-col">
-            <div class="box wage-box">
-                <div class="box-label">7 Social security tips</div>
-                <div class="box-value">${{ social_security_tips }}</div>
-            </div>
-            <div class="box wage-box">
-                <div class="box-label">8 Allocated tips</div>
-                <div class="box-value">${{ allocated_tips }}</div>
-            </div>
-            <div class="box wage-box">
-                <div class="box-label">10 Dependent care benefits</div>
-                <div class="box-value">${{ dependent_care_benefits }}</div>
-            </div>
-            <div class="box wage-box">
-                <div class="box-label">11 Nonqualified plans</div>
-                <div class="box-value">${{ nonqualified_plans }}</div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- State and Local Information -->
-    <div style="clear: both; margin-top: 20px;">
-        <div class="box state-box">
-            <div class="box-label">15 State</div>
-            <div class="box-value">{{ state }}</div>
-        </div>
-        <div class="box state-box">
-            <div class="box-label">Employer's state ID number</div>
-            <div class="box-value">{{ employer_ein }}</div>
-        </div>
-        <div class="box state-box">
-            <div class="box-label">16 State wages, tips, etc.</div>
-            <div class="box-value">${{ state_wages }}</div>
-        </div>
-        <div class="box state-box">
-            <div class="box-label">17 State income tax</div>
-            <div class="box-value">${{ state_tax_withheld }}</div>
-        </div>
-        <div class="box state-box">
-            <div class="box-label">18 Local wages, tips, etc.</div>
-            <div class="box-value">{% if local_wages %}${{ local_wages }}{% endif %}</div>
-        </div>
-        <div class="box state-box">
-            <div class="box-label">19 Local income tax</div>
-            <div class="box-value">{% if local_tax %}${{ local_tax }}{% endif %}</div>
-        </div>
-        <div class="box state-box">
-            <div class="box-label">20 Locality name</div>
-            <div class="box-value">{{ locality_name }}</div>
+        <div style="font-size: 6px; text-align: center; margin-top: 5px;">
+            For Privacy Act and Paperwork Reduction Act Notice, see back of Copy C.
         </div>
     </div>
 </body>
