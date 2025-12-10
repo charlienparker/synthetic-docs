@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Document Generator using HTML templates and class hierarchy
+Document Synthesizer using HTML templates
 """
 
 import os
