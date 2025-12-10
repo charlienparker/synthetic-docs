@@ -153,7 +153,7 @@ outputs/
 - **Generated employer data**: Company names, addresses, and EIN numbers using Faker
 - **Employee information**: Names, addresses, SSNs with format validation
 
-![synthetic_w2_0098](https://github.com/user-attachments/assets/09af88f8-7dcd-43b8-b3d9-daf744d38800)
+<img src="https://github.com/user-attachments/assets/09af88f8-7dcd-43b8-b3d9-daf744d38800" alt="synthetic_w2_0098" width="256" height="256">
 
 ### Paystubs
 - **Template variety**: Standard, ADP-style, QuickBooks, PayChex, Government, Traditional formats
@@ -162,7 +162,7 @@ outputs/
 - **Pay period support**: Bi-weekly, monthly, and semi-monthly with date calculations
 - **Data fields**: Employee information, earnings, deductions, year-to-date totals
 
-![synthetic_paystub_0096](https://github.com/user-attachments/assets/82849118-06d2-45ea-80ce-71f111775d70)
+<img src="https://github.com/user-attachments/assets/82849118-06d2-45ea-80ce-71f111775d70" alt="synthetic_w2_0098" width="256" height="256">
 
 ### Other Documents
 - **Driver's Licenses**: State-specific formats with generated personal information
@@ -172,7 +172,7 @@ outputs/
 - **Medical Summaries**: Medical document formats with generated medical terminology
 - **Report Cards**: Academic transcript format with grades and school information
 
-![synthetic_other_0094](https://github.com/user-attachments/assets/7b061243-784a-49b3-88f2-8c974cccbafe)
+<img src="https://github.com/user-attachments/assets/7b061243-784a-49b3-88f2-8c974cccbafe" alt="synthetic_w2_0098" width="256" height="256">
 
 ## Augmentation Pipeline
 
